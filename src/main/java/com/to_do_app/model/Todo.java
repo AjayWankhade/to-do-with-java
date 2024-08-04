@@ -2,6 +2,8 @@ package com.to_do_app.model;
 
 import java.util.Date;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +17,7 @@ public class Todo {
 	
 	private Long id;
 	
+	@NotBlank(message = "description should not blank")
 	private String description;
 	private boolean isDone;
 	private Date targetDate;
