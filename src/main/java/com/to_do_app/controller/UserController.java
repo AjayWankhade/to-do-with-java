@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,6 +73,24 @@ public class UserController {
 	    	return new ResponseEntity<User>(existUser,HttpStatus.OK);
 	    
 	    }
+	    
+	    @DeleteMapping("/{id}")
+	    public ResponseEntity<String> deleteUser(@PathVariable Long id,@RequestBody User user) {
+	        Optional<User> isUser = userService.getUserById(id);
+	        
+	        try {
+	            if (isUser.isEmpty()) {
+	                return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+	            }
+
+	            userService.deleteUser(id,user);
+	            return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
+	            
+	        } catch (Exception e) {
+	            return new ResponseEntity<>("Failed to delete user: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
+	    }
+
 	    
 	    
 	    
