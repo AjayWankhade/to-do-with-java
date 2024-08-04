@@ -75,7 +75,7 @@ public class UserController {
 	    }
 	    
 	    @DeleteMapping("/{id}")
-	    public ResponseEntity<String> deleteUser(@PathVariable Long id,@RequestBody User user) {
+	    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
 	        Optional<User> isUser = userService.getUserById(id);
 	        
 	        try {
@@ -83,7 +83,7 @@ public class UserController {
 	                return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
 	            }
 
-	            userService.deleteUser(id,user);
+	            userService.deleteUser(id);
 	            return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
 	            
 	        } catch (Exception e) {

@@ -56,7 +56,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public void deleteUser(Long id,User user) throws Exception {
+	public void deleteUser(Long id) throws Exception {
 		try {
 			userRepo.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
