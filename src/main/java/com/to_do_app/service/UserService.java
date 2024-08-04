@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -21,39 +22,46 @@ public class UserService {
 	public List<User> getAllUsers() {
 		return userRepo.findAll();
 	}
-	
-	
-     @Transactional
-    public Optional<User> getUserById(Long id) {
-        return userRepo.findById(id);
-    }
 
-     @Transactional
+	@Transactional
+	public Optional<User> getUserById(Long id) {
+		return userRepo.findById(id);
+	}
+
+	@Transactional
 	public User getUserByName(String firstName) {
-		
+
 		return userRepo.findByFirstName(firstName);
 	}
 
-     @Transactional
-	 public User createNewUser(User user) {
-	        return userRepo.save(user);
-	    }
-	 
-     @Transactional
-	 public User updateUserById(Long id,User user) {
-		  
-	        User existingUser = userRepo.findById(id)
-	            .orElseThrow(() -> new RuntimeException("User not found with id " + id));
+	@Transactional
+	public User createNewUser(User user) {
+		return userRepo.save(user);
+	}
 
-	       
-	        existingUser.setFirstName(user.getFirstName());
-	        existingUser.setLastName(user.getLastName());
-	        existingUser.setUserName(user.getUserName());
-	        existingUser.setPassword(user.getPassword());
-	        
-	        User savedUser = userRepo.save(existingUser);
-	        System.out.println("Updated user: " + savedUser);
-	        return savedUser;
-	    }
+	@Transactional
+	public User updateUserById(Long id, User user) {
+
+		User existingUser = userRepo.findById(id)
+				.orElseThrow(() -> new RuntimeException("User not found with id " + id));
+
+		existingUser.setFirstName(user.getFirstName());
+		existingUser.setLastName(user.getLastName());
+		existingUser.setUserName(user.getUserName());
+		existingUser.setPassword(user.getPassword());
+
+		User savedUser = userRepo.save(existingUser);
+		System.out.println("Updated user: " + savedUser);
+		return savedUser;
+	}
+
+	@Transactional
+	public void deleteUser(Long id,User user) throws Exception {
+		try {
+			userRepo.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new Exception("Event not found with id: " + id);
+		}
+	}
 
 }
