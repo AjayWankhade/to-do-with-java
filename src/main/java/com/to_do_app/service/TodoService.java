@@ -49,4 +49,27 @@ public class TodoService {
 		}
 	}
 
+	@Transactional
+	public Todo getTodoById(Long id) {
+
+		Optional<Todo> getTodo = todoRepo.findById(id);
+		if (getTodo.isPresent()) {
+			return getTodo.get();
+		} else {
+			throw new RuntimeException("Todo not Found with id" + id);
+
+		}
+	}
+	
+	@Transactional
+	public void removeTodoById(Long id)
+	{
+		Optional<Todo> todo=todoRepo.findById(id);
+		if(todo.isEmpty()) {
+			throw new RuntimeException("Todo Not Found with ID :"+id);
+		}
+		 todoRepo.deleteById(id);
+		
+	}
+
 }
