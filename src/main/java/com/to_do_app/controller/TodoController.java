@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,6 +50,17 @@ public class TodoController {
 	public Todo putTodo(@PathVariable Long id, @RequestBody Todo todo) {
 
 		return todoService.updateTodo(id, todo);
+	}
+	
+	@GetMapping("/{id}")
+	public Todo getTodoById(@PathVariable Long id) {
+		return todoService.getTodoById(id);
+	}
+	
+	@DeleteMapping("/{id}")
+	public String deleteTodoById(@PathVariable Long id) {
+		 todoService.removeTodoById(id);
+		 return "todo with id :" + id + "has been deleted successfully..."; 
 	}
 
 }
